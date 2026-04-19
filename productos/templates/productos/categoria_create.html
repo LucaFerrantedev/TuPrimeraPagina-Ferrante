@@ -1,0 +1,28 @@
+{% extends 'productos/base.html' %}
+
+{% block title %}Nueva Categoría - HardwareHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card p-4 shadow-lg">
+            <div class="text-center mb-4">
+                <h3 class="fw-bold text-white">Nueva Categoría</h3>
+                <p class="text-secondary small">Define un nuevo tipo de producto (ej: Periféricos, Almacenamiento)</p>
+            </div>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="mb-3 text-light">
+                    {{ form.as_p }}
+                </div>
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-accent py-2 fw-bold">Guardar Categoría</button>
+                    <a href="{% url 'home' %}" class="btn btn-outline-secondary py-2">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'productos/base.html' %}
+
+{% block title %}Inventario - HardwareHub{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Componentes Registrados</h2>
+<div class="row">
+    {% for componente in componentes_list %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 p-3 shadow-sm">
+            <h5 class="text-white">{{ componente.modelo }}</h5>
+            <p class="text-secondary small mb-1">Marca: {{ componente.marca.nombre }}</p>
+            <p class="text-secondary small">Tipo: {{ componente.categoria.tipo_prod }}</p>
+            <p class="fw-bold fs-5" style="color: var(--accent);">${{ componente.precio }}</p>
+            <p class="small text-muted">{{ componente.descripcion }}</p>
+        </div>
+    </div>
+    {% empty %}
+    <p class="text-center text-muted py-5">No se encontraron productos en el inventario.</p>
+    {% endfor %}
+</div>
+{% endblock %}
