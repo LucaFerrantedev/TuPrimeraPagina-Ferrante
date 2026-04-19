@@ -23,8 +23,8 @@ class ComponenteProductosForm(forms.ModelForm):
         fields = ("modelo", "precio", "descripcion", "marca", "categoria")
         widgets = {
             "modelo": forms.TextInput(attrs={'class': 'form-control'}),
-            "precio": forms.DecimalField(attrs={'class': 'form-control'}),
+            "precio": forms.NumberInput(attrs={'class': 'form-control'}),
             "descripcion": forms.TextInput(attrs={'class': 'form-control'}),
-            "marca": forms.TextInput(attrs={'class': 'form-control'}),
-            "marca": forms.TextInput(attrs={'class': 'form-control'})
+            "marca": forms.Select(attrs={'class': 'form-control'}),
+            "categoria": forms.Select(attrs={'class': 'form-control'})
         }
