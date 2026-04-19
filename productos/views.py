@@ -8,7 +8,7 @@ from productos.forms import ComponenteProductosForm
 from django.http import Http404
 
 def home(request):
-    return render(request, "departamentos/index.html")
+    return render(request, "productos/index.html")
 
 def agregar_marca(request):
     if request.method == "POST":
@@ -16,6 +16,10 @@ def agregar_marca(request):
         if form.is_valid():
             form.save()
             return redirect("productos_list")
+    else:
+        form = MarcaProductosForm()
+
+    return render(request, "productos/marca_create.html", {"form": form})
 
 def agregar_categoria(request):
     if request.method == "POST":
@@ -23,6 +27,10 @@ def agregar_categoria(request):
         if form.is_valid():
             form.save()
             return redirect("productos_list")
+    else:
+        form = CategoriaProductosForm()
+
+    return render(request, "productos/categoria_create.html", {"form": form})
 
 def agregar_componente(request):
     if request.method == "POST":
@@ -30,16 +38,20 @@ def agregar_componente(request):
         if form.is_valid():
             form.save()
             return redirect("productos_list")
+    else:
+        form = ComponenteProductosForm()
+
+    return render(request, "productos/componente_create.html", {"form": form})
 
 def componentes_list(request):
-    nombre = request.GET.get("nombre")
+    modelo = request.GET.get("nombre")
     componentes_query = ComponenteProductos.objects.all()
-    if nombre is not None:
+    if modelo is not None:
         componentes_query = ComponenteProductos.objects.filter(
-            nombre__icontains=nombre
+            modelo__icontains=modelo
         )
     contexto = {
-        "departamentos_list": list(componentes_query)
+        "componentes_list": list(componentes_query)
     }
 
     return render(request, "productos/productos_list.html", contexto)
