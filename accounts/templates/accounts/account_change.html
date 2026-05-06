@@ -1,0 +1,44 @@
+{% extends 'productos/base.html' %}
+
+{% block title %}Editar Perfil - HardwareHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-dark border-0 p-4">
+                <h3 class="text-white fw-bold mb-0 text-center">Configuración del Perfil</h3>
+            </div>
+            
+            <div class="card-body p-4 p-md-5">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    
+                    <div class="text-center mb-4">
+                        {% if user.avatar %}
+                            <img src="{{ user.avatar.url }}" class="rounded-circle mb-3 border border-3" 
+                                 style="width: 120px; height: 120px; object-fit: cover; border-color: var(--accent) !important;">
+                        {% endif %}
+                        <p class="text-secondary small">Puedes actualizar tu imagen de perfil y tus datos personales a continuación.</p>
+                    </div>
+
+                    <div class="mb-3 text-light">
+                        {{ form.as_p }}
+                    </div>
+                    
+                    <div class="d-grid gap-2 mt-5">
+                        <button type="submit" class="btn btn-accent py-2 fw-bold">Guardar Cambios</button>
+                        <a href="{% url 'account_detail' %}" class="btn btn-outline-secondary py-2">Cancelar</a>
+                    </div>
+                </form>
+
+                <div class="mt-4 pt-3 border-top text-center">
+                    <p class="text-muted small">
+                        Si necesitas cambiar tu contraseña, por favor contacta al administrador.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

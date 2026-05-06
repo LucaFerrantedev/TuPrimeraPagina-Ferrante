@@ -1,10 +1,13 @@
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
+from django.conf import settings
+from django.conf.urls.static import static
+
 from productos.views import (CategoriaCreateView, ComponenteCreateView, ComponentesListView, 
                              ComponenteDetailView, ComponenteUpdateView, ComponenteDeleteView,
                              MarcaCreateView, home, about)
-from accounts.views import register, profile_detail, profile_change
+from accounts.views import register, account_detail, account_change
 
 urlpatterns = [
    path('admin/', admin.site.urls), # ¡Descomentado para que puedas entrar al panel!
@@ -23,6 +26,10 @@ urlpatterns = [
    path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
    path('logout/', LogoutView.as_view(), name='logout'),
    path('registro/', register, name='register'),
-   path('perfil/', profile_detail, name='profile_detail'),
-   path('perfil/editar/', profile_change, name='profile_change'),
+   path('cuenta/', account_detail, name='account_detail'),
+   path('cuenta/editar/', account_change, name='account_change'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    
