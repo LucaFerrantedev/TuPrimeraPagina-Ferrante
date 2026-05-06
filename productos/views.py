@@ -7,7 +7,7 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from productos.models import MarcaProductos,CategoriaProductos, ComponenteProductos
 from productos.forms import MarcaProductosForm, CategoriaProductosForm, ComponenteProductosForm
@@ -16,23 +16,32 @@ from productos.forms import MarcaProductosForm, CategoriaProductosForm, Componen
 def home(request):
     return render(request, "productos/index.html")
 
-class MarcaCreateView(LoginRequiredMixin, CreateView):
+class MarcaCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = MarcaProductos
     form_class = MarcaProductosForm
     template_name = "productos/marca_create.html"
     success_url = reverse_lazy("productos_list")
 
-class CategoriaCreateView(LoginRequiredMixin, CreateView):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class CategoriaCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = CategoriaProductos
     form_class = CategoriaProductosForm
     template_name = "productos/categoria_create.html"
     success_url = reverse_lazy("productos_list")
 
-class ComponenteCreateView(LoginRequiredMixin, CreateView):
+    def test_func(self):
+        return self.request.user.is_superuser
+
+class ComponenteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = ComponenteProductos
     form_class = ComponenteProductosForm
     template_name = "productos/componente_create.html"
     success_url = reverse_lazy("productos_list")
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 class ComponentesListView(ListView):
     model = ComponenteProductos
@@ -67,6 +76,9 @@ class ComponenteUpdateView(LoginRequiredMixin, UpdateView):
             "producto_detail",
             kwargs={"sku": self.object.sku}
         )
+    
+    def test_func(self):
+        return self.request.user.is_superuser
 
 class ComponenteDeleteView(LoginRequiredMixin, DeleteView):
     model = ComponenteProductos
@@ -74,6 +86,9 @@ class ComponenteDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("productos_list")
     slug_field = "sku"
     slug_url_kwarg = "sku"
+
+    def test_func(self):
+        return self.request.user.is_superuser
 
 def about(request):
     return render(request, "productos/about.html")

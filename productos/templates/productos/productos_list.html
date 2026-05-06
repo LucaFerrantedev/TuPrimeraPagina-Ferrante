@@ -11,18 +11,21 @@
     <div class="col-md-4 mb-4">
         <div class="card h-100 shadow-sm border-0">
             {% if componente.imagen %}
-                <img src="{{ componente.imagen.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ componente.modelo }}">
+            <img src="{{ componente.imagen.url }}" class="card-img-top" style="height: 200px; object-fit: cover;"
+                alt="{{ componente.modelo }}">
             {% endif %}
             <div class="card-body">
                 <h5 class="text-white">{{ componente.modelo }}</h5>
-                <p class="text-secondary small mb-1">{{ componente.marca.nombre }} | {{ componente.categoria.tipo_prod }}</p>
+                <p class="text-secondary small mb-1">{{ componente.marca.nombre }} | {{ componente.categoria.tipo_prod
+                    }}</p>
                 <p class="fw-bold fs-5 mb-3" style="color: var(--accent);">${{ componente.precio }}</p>
-                
+
                 <div class="d-flex gap-2">
-                    <a href="{% url 'producto_detail' componente.sku %}" class="btn btn-sm btn-outline-light flex-grow-1">Detalles</a>
+                    <a href="{% url 'producto_detail' componente.sku %}"
+                        class="btn btn-sm btn-outline-light flex-grow-1">Detalles</a>
                     {% if user.is_authenticated %}
-                        <a href="{% url 'componente_update' componente.sku %}" class="btn btn-sm btn-outline-warning">✎</a>
-                        <a href="{% url 'componente_delete' componente.sku %}" class="btn btn-sm btn-outline-danger">✖</a>
+                    <a href="{% url 'componente_update' componente.sku %}" class="btn btn-sm btn-outline-warning">✎</a>
+                    <a href="{% url 'componente_delete' componente.sku %}" class="btn btn-sm btn-outline-danger">✖</a>
                     {% endif %}
                 </div>
             </div>
@@ -30,7 +33,7 @@
     </div>
     {% empty %}
     <div class="col-12 text-center py-5">
-        <p class="text-muted">No se encontraron productos.</p>
+        <h4 class="text-light fw-bold" style="color: #9ca3af !important;">No se encontraron productos.</h4>
     </div>
     {% endfor %}
 </div>

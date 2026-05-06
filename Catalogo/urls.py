@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -28,8 +29,11 @@ urlpatterns = [
    path('registro/', register, name='register'),
    path('cuenta/', account_detail, name='account_detail'),
    path('cuenta/editar/', account_change, name='account_change'),
+   path('cuenta/password/', auth_views.PasswordChangeView.as_view(
+        template_name='accounts/account_change_detail.html',
+        success_url='/cuenta/'
+    ), name='password_change'),
 ]
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
