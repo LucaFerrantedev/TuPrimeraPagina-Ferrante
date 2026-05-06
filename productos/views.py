@@ -74,3 +74,6 @@ class ComponenteDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("productos_list")
     slug_field = "sku"
     slug_url_kwarg = "sku"
+
+def about(request):
+    return render(request, "productos/about.html")
