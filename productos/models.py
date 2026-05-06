@@ -29,6 +29,8 @@ class ComponenteProductos(models.Model):
     descripcion = models.CharField(max_length=200, null=True)
     marca = models.ForeignKey(MarcaProductos, on_delete=models.CASCADE)
     categoria = models.ForeignKey(CategoriaProductos, on_delete=models.CASCADE)
+    fecha_ingreso = models.DateField(auto_now_add=True)
+    sku = models.IntegerField(unique=True, null=True)
 
     def __str__(self):
         return f"Marca: {self.marca.nombre} / Modelo: {self.modelo} / Precio: {self.precio} / Descripción: {self.descripcion}"
