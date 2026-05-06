@@ -6,13 +6,13 @@ from accounts.forms import *
 
 def register(request):
     if request.method == "POST":
-        form = AccountChangeForm(request.POST)  # request.FILE
+        form = AccountCreateForm(request.POST) 
         if form.is_valid():
             user = form.save()
             login(request, user)
             return redirect("account_detail")
     else:
-        form = AccountChangeForm()
+        form = AccountCreateForm() 
     return render(request, "accounts/register.html", {"form": form})
 
 
