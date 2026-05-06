@@ -1,22 +1,37 @@
 {% extends 'productos/base.html' %}
-
-{% block title %}Inventario - HardwareHub{% endblock %}
-
 {% block content %}
-<h2 class="mb-4">Componentes Registrados</h2>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Componentes Registrados</h2>
+    {% if user.is_authenticated %}
+    <a href="{% url 'componente_create' %}" class="btn btn-accent btn-sm">+ Nuevo</a>
+    {% endif %}
+</div>
 <div class="row">
     {% for componente in productos_list %}
     <div class="col-md-4 mb-4">
-        <div class="card h-100 p-3 shadow-sm">
-            <h5 class="text-white">{{ componente.modelo }}</h5>
-            <p class="text-secondary small mb-1">Marca: {{ componente.marca.nombre }}</p>
-            <p class="text-secondary small">Tipo: {{ componente.categoria.tipo_prod }}</p>
-            <p class="fw-bold fs-5" style="color: var(--accent);">${{ componente.precio }}</p>
-            <p class="small text-muted">{{ componente.descripcion }}</p>
+        <div class="card h-100 shadow-sm border-0">
+            {% if componente.imagen %}
+                <img src="{{ componente.imagen.url }}" class="card-img-top" style="height: 200px; object-fit: cover;" alt="{{ componente.modelo }}">
+            {% endif %}
+            <div class="card-body">
+                <h5 class="text-white">{{ componente.modelo }}</h5>
+                <p class="text-secondary small mb-1">{{ componente.marca.nombre }} | {{ componente.categoria.tipo_prod }}</p>
+                <p class="fw-bold fs-5 mb-3" style="color: var(--accent);">${{ componente.precio }}</p>
+                
+                <div class="d-flex gap-2">
+                    <a href="{% url 'producto_detail' componente.sku %}" class="btn btn-sm btn-outline-light flex-grow-1">Detalles</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'componente_update' componente.sku %}" class="btn btn-sm btn-outline-warning">✎</a>
+                        <a href="{% url 'componente_delete' componente.sku %}" class="btn btn-sm btn-outline-danger">✖</a>
+                    {% endif %}
+                </div>
+            </div>
         </div>
     </div>
     {% empty %}
-    <p class="text-center text-muted py-5">No se encontraron productos en el inventario.</p>
+    <div class="col-12 text-center py-5">
+        <p class="text-muted">No se encontraron productos.</p>
+    </div>
     {% endfor %}
 </div>
 {% endblock %}
