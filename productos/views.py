@@ -66,7 +66,8 @@ class ComponenteDetailView(DetailView):
 
 class ComponenteUpdateView(LoginRequiredMixin, UpdateView):
     model = ComponenteProductos
-    fields = ("imagen", "modelo", "precio", "descripcion", "marca", "categoria", "sku")
+    #fields = ("imagen", "modelo", "precio", "descripcion", "marca", "categoria", "sku")
+    form_class = ComponenteProductosForm
     template_name = "productos/componente_update.html"
     slug_field = "sku"
     slug_url_kwarg = "sku"
