@@ -1,17 +1,49 @@
 {% extends 'productos/base.html' %}
+
+{% block title %}Ingresar - HardwareHub{% endblock %}
+
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-4">
-        <div class="card p-4 shadow">
-            <h3 class="text-center mb-4">Ingresar</h3>
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card p-4 shadow-lg border-0" style="background-color: #1e1e1e;">
+            <div class="text-center mb-4">
+                <h3 class="text-white fw-bold">Ingresar</h3>
+                <p style="color: #9ca3af;" class="small">Ingresa tus credenciales para acceder profesionalmente al inventario.</p>
+            </div>
+            
             <form method="POST">
                 {% csrf_token %}
-                <div class="mb-3 text-light">
-                    {{ form.as_p }}
+                
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small" style="color: #9ca3af;">
+                            {{ field.label }}
+                        </label>
+                        
+                        <input type="{{ field.field.widget.input_type|default:'text' }}" 
+                               name="{{ field.html_name }}"
+                               class="form-control bg-dark text-white border-secondary"
+                               placeholder="{{ field.label }}..."
+                               id="{{ field.id_for_label }}"
+                               required>
+
+                        {% for error in field.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-accent py-2 fw-bold">Ingresar</button>
                 </div>
-                <button type="submit" class="btn btn-accent w-100 py-2">Acceder</button>
             </form>
-            <p class="text-center mt-3 small text-secondary">¿No tienes cuenta? <a href="{% url 'register' %}" class="text-decoration-none" style="color: var(--accent);">Regístrate</a></p>
+            
+            <p class="text-center mt-4 small" style="color: #9ca3af;">
+                ¿No tienes cuenta? 
+                <a href="{% url 'register' %}" class="text-decoration-none fw-bold" style="color: var(--accent);">Regístrate</a>
+            </p>
         </div>
     </div>
 </div>

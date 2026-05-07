@@ -1,7 +1,7 @@
 from django.db import models
 
 def imagen_upload_to(instance, filename):
-    return f"productos/{instance.producto}/{filename}"
+    return f"productos/{instance.modelo}/{filename}"
 
 class MarcaProductos(models.Model):
     nombre = models.CharField(max_length=50)

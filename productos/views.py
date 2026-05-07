@@ -1,6 +1,5 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.contrib.admin.views.decorators import staff_member_required
 from django.views.generic import (
     ListView,
     DetailView,
@@ -35,7 +34,6 @@ class CategoriaCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def test_func(self):
         return self.request.user.is_superuser
 
-@staff_member_required
 class ComponenteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = ComponenteProductos
     form_class = ComponenteProductosForm
@@ -66,7 +64,6 @@ class ComponenteDetailView(DetailView):
     slug_field = "sku"
     slug_url_kwarg = "sku"
 
-@staff_member_required
 class ComponenteUpdateView(LoginRequiredMixin, UpdateView):
     model = ComponenteProductos
     fields = ("imagen", "modelo", "precio", "descripcion", "marca", "categoria", "sku")
@@ -83,7 +80,6 @@ class ComponenteUpdateView(LoginRequiredMixin, UpdateView):
     def test_func(self):
         return self.request.user.is_superuser
 
-@staff_member_required
 class ComponenteDeleteView(LoginRequiredMixin, DeleteView):
     model = ComponenteProductos
     template_name = "productos/producto_confirm_delete.html"

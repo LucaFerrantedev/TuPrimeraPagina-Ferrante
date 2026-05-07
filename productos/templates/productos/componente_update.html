@@ -1,16 +1,43 @@
 {% extends 'productos/base.html' %}
+
+{% block title %}Editar Componente - HardwareHub{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center mt-5">
-    <div class="col-md-6">
-        <div class="card p-4 shadow-lg">
-            <h3 class="fw-bold text-white mb-4 text-center">Editar Componente</h3>
-            <form method="POST" enctype="multipart/form-data">
+    <div class="col-md-6 col-lg-5">
+        <div class="card p-4 shadow-lg border-0" style="background-color: #1e1e1e;">
+            <div class="text-center mb-4">
+                <h3 class="text-white fw-bold">Editar Componente</h3>
+                <p style="color: #9ca3af;" class="small">Modifica los detalles del hardware seleccionado.</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" class="text-light">
                 {% csrf_token %}
-                <div class="mb-3 text-light">
-                    {{ form.as_p }}
+
+                {% for field in form %}
+                <div class="mb-3">
+                    <label class="form-label fw-bold small" style="color: #9ca3af;">
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+                    <div class="form-text mt-1 small" style="color: #6b7280; font-size: 0.75rem;">
+                        {{ field.help_text|safe }}
+                    </div>
+                    {% endif %}
+
+                    {% for error in field.errors %}
+                    <div class="text-danger small mt-1">
+                        {{ error }}
+                    </div>
+                    {% endfor %}
                 </div>
+                {% endfor %}
+
                 <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-accent py-2 fw-bold">Guardar Componente</button>
+                    <button type="submit" class="btn btn-accent py-2 fw-bold shadow-sm">Guardar Cambios</button>
                     <a href="{% url 'productos_list' %}" class="btn btn-outline-secondary py-2">Cancelar</a>
                 </div>
             </form>
