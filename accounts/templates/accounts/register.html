@@ -4,27 +4,46 @@
 
 {% block content %}
 <div class="row justify-content-center mt-5">
-    <div class="col-md-5">
-        <div class="card p-4 shadow-lg border-0">
+    <div class="col-md-6 col-lg-5">
+        <div class="card p-4 shadow-lg border-0" style="background-color: #1e1e1e;">
             <div class="text-center mb-4">
                 <h3 class="text-white fw-bold">Únete a HardwareHub</h3>
-                <p class="text-secondary small">Crea tu cuenta para gestionar inventario.</p>
+                <p style="color: #9ca3af;" class="small">Crea tu cuenta para gestionar el inventario profesionalmente.</p>
             </div>
             
             <form method="POST">
                 {% csrf_token %}
-                <div class="mb-3 text-light">
-                    {{ form.as_p }}
-                </div>
+                
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small" style="color: #9ca3af;">
+                            {{ field.label }}
+                        </label>
+                        
+                        {{ field }}
+                        
+                        {% if field.help_text %}
+                            <div class="form-text mt-1 small" style="color: #6b7280; font-size: 0.75rem;">
+                                {{ field.help_text|safe }}
+                            </div>
+                        {% endif %}
+
+                        {% for error in field.errors %}
+                            <div class="text-danger small mt-1">
+                                {{ error }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
                 
                 <div class="d-grid gap-2 mt-4">
-                    <button type="submit" class="btn btn-accent py-2 fw-bold">Crear Cuenta</button>
+                    <button type="submit" class="btn btn-accent py-2 fw-bold shadow-sm">Crear Cuenta</button>
                 </div>
             </form>
             
-            <p class="text-center mt-4 small text-secondary">
+            <p class="text-center mt-4 small" style="color: #9ca3af;">
                 ¿Ya tienes una cuenta? 
-                <a href="{% url 'login' %}" class="text-decoration-none" style="color: var(--accent);">Inicia Sesión aquí</a>
+                <a href="{% url 'login' %}" class="text-decoration-none fw-bold" style="color: var(--accent);">Inicia Sesión</a>
             </p>
         </div>
     </div>

@@ -11,9 +11,9 @@ from productos.views import (CategoriaCreateView, ComponenteCreateView, Componen
 from accounts.views import register, account_detail, account_change
 
 urlpatterns = [
-   path('admin/', admin.site.urls), # ¡Descomentado para que puedas entrar al panel!
+   path('admin/', admin.site.urls),
    path("", home, name="home"),
-   path("about/", about, name="about"), # Ruta del Acerca de mí
+   path("about/", about, name="about"),
    
    path("productos/", ComponentesListView.as_view(), name="productos_list"),
    path("productos/crear_marca/", MarcaCreateView.as_view(), name="marca_create"),
