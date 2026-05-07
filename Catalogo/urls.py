@@ -1,12 +1,39 @@
 from django.contrib import admin
 from django.urls import path
-from productos.views import home, componentes_list, agregar_marca, agregar_categoria, agregar_componente
+from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
+
+from productos.views import (CategoriaCreateView, ComponenteCreateView, ComponentesListView, 
+                             ComponenteDetailView, ComponenteUpdateView, ComponenteDeleteView,
+                             MarcaCreateView, home, about)
+from accounts.views import register, account_detail, account_change
 
 urlpatterns = [
-   #path('admin/', admin.site.urls),
+   path('admin/', admin.site.urls),
    path("", home, name="home"),
-   path("productos/", componentes_list, name="productos_list"),
-   path("productos/crear_marca/", agregar_marca, name="marca_create"),
-   path("productos/crear_categoria/", agregar_categoria, name="categoria_create"),
-   path("productos/crear_componente/", agregar_componente, name="componente_create")
+   path("about/", about, name="about"),
+   
+   path("productos/", ComponentesListView.as_view(), name="productos_list"),
+   path("productos/crear_marca/", MarcaCreateView.as_view(), name="marca_create"),
+   path("productos/crear_categoria/", CategoriaCreateView.as_view(), name="categoria_create"),
+   path("productos/crear_componente/", ComponenteCreateView.as_view(), name="componente_create"),
+
+   path("productos/<int:sku>/", ComponenteDetailView.as_view(), name="producto_detail"),
+   path("productos/<int:sku>/editar/", ComponenteUpdateView.as_view(), name="componente_update"),
+   path("productos/<int:sku>/borrar/", ComponenteDeleteView.as_view(), name="componente_delete"),
+
+   path('login/', LoginView.as_view(template_name='accounts/login.html'), name='login'),
+   path('logout/', LogoutView.as_view(), name='logout'),
+   path('registro/', register, name='register'),
+   path('cuenta/', account_detail, name='account_detail'),
+   path('cuenta/editar/', account_change, name='account_change'),
+   path('cuenta/password/', auth_views.PasswordChangeView.as_view(
+        template_name='accounts/account_change_detail.html',
+        success_url='/cuenta/'
+    ), name='password_change'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

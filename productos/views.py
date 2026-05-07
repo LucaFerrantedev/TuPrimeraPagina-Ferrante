@@ -1,57 +1,95 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from productos.models import MarcaProductos
-from productos.models import CategoriaProductos
-from productos.models import ComponenteProductos
-from productos.forms import MarcaProductosForm
-from productos.forms import CategoriaProductosForm
-from productos.forms import ComponenteProductosForm
-from django.http import Http404
+from django.shortcuts import render
+from django.urls import reverse_lazy
+from django.views.generic import (
+    ListView,
+    DetailView,
+    CreateView,
+    UpdateView,
+    DeleteView
+)
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
+from productos.models import MarcaProductos,CategoriaProductos, ComponenteProductos
+from productos.forms import MarcaProductosForm, CategoriaProductosForm, ComponenteProductosForm
+
 
 def home(request):
     return render(request, "productos/index.html")
 
-def agregar_marca(request):
-    if request.method == "POST":
-        form = MarcaProductosForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("productos_list")
-    else:
-        form = MarcaProductosForm()
+class MarcaCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = MarcaProductos
+    form_class = MarcaProductosForm
+    template_name = "productos/marca_create.html"
+    success_url = reverse_lazy("productos_list")
 
-    return render(request, "productos/marca_create.html", {"form": form})
+    def test_func(self):
+        return self.request.user.is_superuser
 
-def agregar_categoria(request):
-    if request.method == "POST":
-        form = CategoriaProductosForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("productos_list")
-    else:
-        form = CategoriaProductosForm()
+class CategoriaCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = CategoriaProductos
+    form_class = CategoriaProductosForm
+    template_name = "productos/categoria_create.html"
+    success_url = reverse_lazy("productos_list")
 
-    return render(request, "productos/categoria_create.html", {"form": form})
+    def test_func(self):
+        return self.request.user.is_superuser
 
-def agregar_componente(request):
-    if request.method == "POST":
-        form = ComponenteProductosForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect("productos_list")
-    else:
-        form = ComponenteProductosForm()
+class ComponenteCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = ComponenteProductos
+    form_class = ComponenteProductosForm
+    template_name = "productos/componente_create.html"
+    success_url = reverse_lazy("productos_list")
 
-    return render(request, "productos/componente_create.html", {"form": form})
+    def test_func(self):
+        return self.request.user.is_superuser
 
-def componentes_list(request):
-    modelo = request.GET.get("nombre")
-    componentes_query = ComponenteProductos.objects.all()
-    if modelo is not None:
-        componentes_query = ComponenteProductos.objects.filter(
-            modelo__icontains=modelo
+class ComponentesListView(ListView):
+    model = ComponenteProductos
+    template_name = "productos/productos_list.html"
+    context_object_name = "productos_list"
+
+    def get_queryset(self):
+        query_list = super().get_queryset()
+        query = self.request.GET.get("nombre") 
+        
+        if query:
+            query_list = query_list.filter(modelo__icontains=query)
+            
+        return query_list
+
+class ComponenteDetailView(DetailView):
+    model = ComponenteProductos
+    template_name = "productos/producto_detail.html"
+    context_object_name = "producto"
+    slug_field = "sku"
+    slug_url_kwarg = "sku"
+
+class ComponenteUpdateView(LoginRequiredMixin, UpdateView):
+    model = ComponenteProductos
+    #fields = ("imagen", "modelo", "precio", "descripcion", "marca", "categoria", "sku")
+    form_class = ComponenteProductosForm
+    template_name = "productos/componente_update.html"
+    slug_field = "sku"
+    slug_url_kwarg = "sku"
+
+    def get_success_url(self):
+        return reverse_lazy(
+            "producto_detail",
+            kwargs={"sku": self.object.sku}
         )
-    contexto = {
-        "componentes_list": list(componentes_query)
-    }
+    
+    def test_func(self):
+        return self.request.user.is_superuser
 
-    return render(request, "productos/productos_list.html", contexto)
+class ComponenteDeleteView(LoginRequiredMixin, DeleteView):
+    model = ComponenteProductos
+    template_name = "productos/producto_confirm_delete.html"
+    success_url = reverse_lazy("productos_list")
+    slug_field = "sku"
+    slug_url_kwarg = "sku"
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+def about(request):
+    return render(request, "productos/about.html")

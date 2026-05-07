@@ -1,0 +1,18 @@
+{% extends 'productos/base.html' %}
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card p-4 text-center border-danger">
+            <h4 class="text-white mb-4">¿Eliminar producto?</h4>
+            <p class="text-secondary mb-4">Estás a punto de borrar <strong>{{ object.modelo }}</strong> de forma permanente.</p>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-danger py-2">Sí, eliminar definitivamente</button>
+                    <a href="{% url 'productos_list' %}" class="btn btn-outline-secondary py-2">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

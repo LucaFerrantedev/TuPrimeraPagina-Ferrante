@@ -1,0 +1,25 @@
+{% extends 'productos/base.html' %}
+
+{% block title %}Acerca de mí - HardwareHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-8">
+        <div class="card p-5 shadow-lg border-0 text-center">
+            <img src="https://ui-avatars.com/api/?name=Luca+Ferrante&background=6366f1&color=fff&size=150" class="rounded-circle mx-auto mb-4 border border-3" style="border-color: var(--accent) !important;" alt="Avatar">
+            
+            <h2 class="fw-bold text-white mb-3">¡Hola! Soy Luca Ferrante</h2>
+            <h5 class="text-accent mb-4" style="color: var(--accent);">Desarrollador Backend en Python</h5>
+            
+            <p class="text-secondary mb-4 fs-5">
+                HardwareHub es mi proyecto final para el curso de Python. Está desarrollado utilizando <strong>Django</strong>, implementando un sistema de gestión de inventario completo (CRUD) con validación de usuarios, manejo de imágenes y clases basadas en vistas (CBV).
+            </p>
+            
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <a href="{% url 'home' %}" class="btn btn-outline-light px-4 py-2">Volver al Inicio</a>
+                <a href="https://github.com/lucaferrantedev" target="_blank" class="btn btn-accent px-4 py-2">Mi GitHub</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
