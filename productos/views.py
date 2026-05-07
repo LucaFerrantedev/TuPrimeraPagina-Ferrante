@@ -64,7 +64,7 @@ class ComponenteDetailView(DetailView):
     slug_field = "sku"
     slug_url_kwarg = "sku"
 
-class ComponenteUpdateView(LoginRequiredMixin, UpdateView):
+class ComponenteUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = ComponenteProductos
     #fields = ("imagen", "modelo", "precio", "descripcion", "marca", "categoria", "sku")
     form_class = ComponenteProductosForm
@@ -81,7 +81,7 @@ class ComponenteUpdateView(LoginRequiredMixin, UpdateView):
     def test_func(self):
         return self.request.user.is_superuser
 
-class ComponenteDeleteView(LoginRequiredMixin, DeleteView):
+class ComponenteDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = ComponenteProductos
     template_name = "productos/producto_confirm_delete.html"
     success_url = reverse_lazy("productos_list")
