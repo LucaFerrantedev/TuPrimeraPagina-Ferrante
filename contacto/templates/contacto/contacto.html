@@ -1,0 +1,41 @@
+{% extends 'productos/base.html' %}
+
+{% block title %}Contacto - HardwareHub{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card p-4 shadow-lg border-0" style="background-color: #1e1e1e;">
+            <div class="text-center mb-4">
+                <h3 class="text-white fw-bold">Contacto</h3>
+                <p style="color: #9ca3af;" class="small">Dejanos tu consulta y te responderemos a la brevedad.</p>
+            </div>
+
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-success bg-dark text-success border-success" role="alert">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+            
+            <form method="POST">
+                {% csrf_token %}
+                
+                {% for field in form %}
+                    <div class="mb-3">
+                        <label class="form-label fw-bold small" style="color: #9ca3af;">
+                            {{ field.label }}
+                        </label>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                
+                <div class="d-grid gap-2 mt-4">
+                    <button type="submit" class="btn btn-accent py-2 fw-bold shadow-sm">Enviar Mensaje</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
